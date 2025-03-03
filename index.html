@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passphrase Generator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <script type="module" src="ui-controller.js"></script>
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="h4 mb-0">Passphrase Generator</h2>
+                </div>
+                <div class="card-body">
+                    <form id="passphraseForm">
+                        <div class="mb-3">
+                            <label for="wordCount" class="form-label">Number of Words</label>
+                            <input
+                                    type="number"
+                                    class="form-control"
+                                    id="wordCount"
+                                    min="2"
+                                    max="6"
+                                    value="3"
+                                    required
+                            >
+                            <div class="form-text">Choose between 2 and 6 words</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="useNumbers">
+                                <label class="form-check-label" for="useNumbers">
+                                    Include Numbers
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="useSymbols">
+                                <label class="form-check-label" for="useSymbols">
+                                    Include Symbols
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            Generate Passphrase
+                        </button>
+                    </form>
+
+                    <div class="mt-4">
+                        <label class="form-label">Generated Passphrase:</label>
+                        <div class="input-group">
+                            <input
+                                    type="text"
+                                    id="generatedPassphrase"
+                                    class="form-control font-monospace"
+                                    readonly
+                                    placeholder="Click Generate to create a passphrase"
+                            >
+                            <button
+                                    class="btn btn-outline-secondary"
+                                    type="button"
+                                    id="copyButton"
+                                    disabled
+                            >
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
