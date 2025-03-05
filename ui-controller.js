@@ -1,7 +1,11 @@
 // ui-controller.js
 import { generatePassphrase } from './passphrase.js';
+import WordListManager from './wordListManager.js';
+
 
 class PassphraseUIController {
+    wordListManager;
+    wordList;
     constructor() {
         // UI Elements
         this.form = document.getElementById('passphraseForm');
@@ -16,6 +20,10 @@ class PassphraseUIController {
         this.form.addEventListener('submit', this.handleGenerate.bind(this));
         this.copyButton.addEventListener('click', this.handleCopy.bind(this));
         this.wordCountInput.addEventListener('input', this.validateWordCount.bind(this));
+
+        this.wordListManager = new WordListManager;
+        this.wordListManager.initialize();
+        this.wordList = this.wordListManager.getWordList();
     }
 
     handleGenerate(event) {
@@ -34,7 +42,7 @@ class PassphraseUIController {
             }
 
             // Generate and display passphrase
-            const passphrase = generatePassphrase(wordCount, useNumbers, useSymbols);
+            const passphrase = generatePassphrase(this.wordList, wordCount, useNumbers, useSymbols);
             this.outputField.value = passphrase;
             this.copyButton.disabled = false;
             

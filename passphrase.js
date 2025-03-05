@@ -1,8 +1,11 @@
 // passphrase.js
-const wordList = [
+
+
+/*const wordList = [
     "apple", "banana", "cherry", "date", "elderberry",
     "fig", "grape", "honeydew", "kiwi", "lemon"
-];
+];*/
+
 
 const numberSubstitutions = {
     'l': '1',
@@ -41,7 +44,8 @@ function replaceCharacters(word, useNumbers, useSymbols) {
     return result;
 }
 
-function generatePassphrase(wordCount, useNumbers = false, useSymbols = false) {
+function generatePassphrase(wordList, wordCount, useNumbers = false, useSymbols = false) {
+
     if (!Number.isInteger(wordCount) || wordCount < 1) {
         throw new Error("wordCount must be a positive integer");
     }
@@ -65,4 +69,4 @@ function generatePassphrase(wordCount, useNumbers = false, useSymbols = false) {
 }
 
 // Export as ES modules
-export { generatePassphrase, replaceCharacters, wordList };
+export { generatePassphrase, replaceCharacters };
