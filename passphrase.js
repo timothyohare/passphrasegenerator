@@ -12,8 +12,8 @@ const numberSubstitutions = {
     'e': '3',
     'a': '4',
     's': '5',
+    'b': '6',
     't': '7',
-    'b': '8',
     'g': '9'
 };
 
@@ -36,8 +36,12 @@ function replaceCharacters(word, useNumbers, useSymbols) {
         const char = result[i];
         if (useSymbols && char in symbolSubstitutions) {
             result = result.substring(0, i) + symbolSubstitutions[char] + result.substring(i + 1);
+            // only use one symbol per word
+            useSymbols = false;
         } else if (useNumbers && char in numberSubstitutions) {
             result = result.substring(0, i) + numberSubstitutions[char] + result.substring(i + 1);
+            // only use one number per word
+            useNumbers = false;
         }
     }
 
