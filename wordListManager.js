@@ -10,8 +10,6 @@ class WordListManager {
 
   async initialize() {
     try {
-
-
       // Load medium list by default
       await this.loadWordList('medium');
 
@@ -26,13 +24,16 @@ class WordListManager {
     if (this.wordLists[size]) return this.wordLists[size];
 
     try {
-      const response = await fetch(`google-10000-english-usa-no-swears-${size}.txt`);
+      const response = await fetch(`google-10000-english-usa-no-swears-${size}.txt`)
+      if (!response.ok) {
+        throw new Error('Response status: ${response.status}');
+      }
       const text = await response.text();
       this.wordLists[size] = text.split('\n').filter(w => w.trim().length > 0);
       this.currentList = size;
       return this.wordLists[size];
     } catch (error) {
-      console.error(`Failed to load ${size} word list:`, error);
+      console.error(`Failed to load word list:`, error);
       return null;
     }
   }

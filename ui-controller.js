@@ -22,8 +22,8 @@ class PassphraseUIController {
         this.wordCountInput.addEventListener('input', this.validateWordCount.bind(this));
 
         this.wordListManager = new WordListManager;
-        this.wordListManager.initialize();
-        this.wordList = this.wordListManager.getWordList();
+        const v = this.wordListManager.initialize();
+
     }
 
     handleGenerate(event) {
@@ -40,7 +40,7 @@ class PassphraseUIController {
                 this.showError('Please enter a number between 2 and 6');
                 return;
             }
-
+            this.wordList = this.wordListManager.getWordList();
             // Generate and display passphrase
             const passphrase = generatePassphrase(this.wordList, wordCount, useNumbers, useSymbols);
             this.outputField.value = passphrase;
