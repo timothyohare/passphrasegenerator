@@ -12,6 +12,7 @@ class PassphraseUIController {
         this.wordCountInput = document.getElementById('wordCount');
         this.numberCheckbox = document.getElementById('useNumbers');
         this.symbolCheckbox = document.getElementById('useSymbols');
+        this.capitalsCheckbox = document.getElementById('useCapitals');
         this.outputField = document.getElementById('generatedPassphrase');
         this.copyButton = document.getElementById('copyButton');
         this.errorAlert = document.getElementById('errorAlert');
@@ -34,6 +35,7 @@ class PassphraseUIController {
             const wordCount = parseInt(this.wordCountInput.value);
             const useNumbers = this.numberCheckbox.checked;
             const useSymbols = this.symbolCheckbox.checked;
+            const useCapitals = this.capitalsCheckbox.checked;
 
             // Validate input
             if (!this.isValidWordCount(wordCount)) {
@@ -42,7 +44,7 @@ class PassphraseUIController {
             }
             this.wordList = this.wordListManager.getWordList();
             // Generate and display passphrase
-            const passphrase = generatePassphrase(this.wordList, wordCount, useNumbers, useSymbols);
+            const passphrase = generatePassphrase(this.wordList, wordCount, useNumbers, useSymbols, useCapitals);
             this.outputField.value = passphrase;
             this.copyButton.disabled = false;
             

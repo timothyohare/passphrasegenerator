@@ -24,8 +24,8 @@ const symbolSubstitutions = {
     'o': '*'
 };
 
-function replaceCharacters(word, useNumbers, useSymbols) {
-    if (!useNumbers && !useSymbols) {
+function replaceCharacters(word, useNumbers, useSymbols, useCapitals) {
+    if (!useNumbers && !useSymbols && !useCapitals) {
         return word;
     }
 
@@ -45,10 +45,23 @@ function replaceCharacters(word, useNumbers, useSymbols) {
         }
     }
 
+    if (useCapitals) {
+        const alphaIndices = [];
+        for (let i = 0; i < result.length; i++) {
+            if (result[i] >= 'a' && result[i] <= 'z') {
+                alphaIndices.push(i);
+            }
+        }
+        if (alphaIndices.length > 0) {
+            const idx = alphaIndices[Math.floor(Math.random() * alphaIndices.length)];
+            result = result.substring(0, idx) + result[idx].toUpperCase() + result.substring(idx + 1);
+        }
+    }
+
     return result;
 }
 
-function generatePassphrase(wordList, wordCount, useNumbers = false, useSymbols = false) {
+function generatePassphrase(wordList, wordCount, useNumbers = false, useSymbols = false, useCapitals = false) {
 
     if (!Number.isInteger(wordCount) || wordCount < 1) {
         throw new Error("wordCount must be a positive integer");
@@ -64,7 +77,7 @@ function generatePassphrase(wordList, wordCount, useNumbers = false, useSymbols 
     for (let i = 0; i < wordCount; i++) {
         const randomIndex = Math.floor(Math.random() * availableWords.length);
         const word = availableWords[randomIndex];
-        const processedWord = replaceCharacters(word, useNumbers, useSymbols);
+        const processedWord = replaceCharacters(word, useNumbers, useSymbols, useCapitals);
         selectedWords.push(processedWord);
         availableWords.splice(randomIndex, 1);
     }
