@@ -1,11 +1,10 @@
 // passphrase.js
 
-
-/*const wordList = [
-    "apple", "banana", "cherry", "date", "elderberry",
-    "fig", "grape", "honeydew", "kiwi", "lemon"
-];*/
-
+function secureRandInt(max) {
+    const arr = new Uint32Array(1);
+    globalThis.crypto.getRandomValues(arr);
+    return arr[0] % max;
+}
 
 const numberSubstitutions = {
     'l': '1',
@@ -53,7 +52,7 @@ function replaceCharacters(word, useNumbers, useSymbols, useCapitals) {
             }
         }
         if (alphaIndices.length > 0) {
-            const idx = alphaIndices[Math.floor(Math.random() * alphaIndices.length)];
+            const idx = alphaIndices[secureRandInt(alphaIndices.length)];
             result = result.substring(0, idx) + result[idx].toUpperCase() + result.substring(idx + 1);
         }
     }
@@ -75,7 +74,7 @@ function generatePassphrase(wordList, wordCount, useNumbers = false, useSymbols 
     const availableWords = [...wordList];
 
     for (let i = 0; i < wordCount; i++) {
-        const randomIndex = Math.floor(Math.random() * availableWords.length);
+        const randomIndex = secureRandInt(availableWords.length);
         const word = availableWords[randomIndex];
         const processedWord = replaceCharacters(word, useNumbers, useSymbols, useCapitals);
         selectedWords.push(processedWord);

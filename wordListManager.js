@@ -26,10 +26,12 @@ class WordListManager {
     try {
       const response = await fetch(`google-10000-english-usa-no-swears-${size}.txt`)
       if (!response.ok) {
-        throw new Error('Response status: ${response.status}');
+        throw new Error(`Response status: ${response.status}`);
       }
       const text = await response.text();
-      this.wordLists[size] = text.split('\n').filter(w => w.trim().length > 0);
+      this.wordLists[size] = text.split('\n')
+        .map(w => w.trim())
+        .filter(w => /^[a-z]{2,20}$/.test(w));
       this.currentList = size;
       return this.wordLists[size];
     } catch (error) {

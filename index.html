@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Passphrase Generator</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'none'; script-src 'self'; style-src 'self' https://cdnjs.cloudflare.com; connect-src 'self'">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
     <script type="module" src="ui-controller.js"></script>
 </head>
 <body class="bg-light">
@@ -29,6 +34,9 @@
                                     required
                             >
                             <div class="form-text">Choose between 2 and 6 words</div>
+                            <div id="entropyWarning" class="form-text text-warning" style="display:none">
+                                &#9888; Low entropy: 2&ndash;3 words is roughly equivalent to an 8-character password. Use 4+ words for stronger security.
+                            </div>
                         </div>
 
                         <div class="mb-3">

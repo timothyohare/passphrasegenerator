@@ -1,4 +1,4 @@
-import { describe, test, expect } from 'vitest';
+import { describe, test, expect, vi, afterEach } from 'vitest';
 import { generatePassphrase, replaceCharacters } from './passphrase.js';
 
 // Every word in this list has at least one symbol-substitutable char
@@ -59,6 +59,26 @@ describe('replaceCharacters', () => {
         expect(['@', '$', '!', '*'].some(s => result.includes(s))).toBe(true);
         expect(result).toMatch(/\d/);
         expect(result).toMatch(/[A-Z]/);
+    });
+});
+
+describe('secure randomness', () => {
+    afterEach(() => vi.restoreAllMocks());
+
+    test('generatePassphrase uses crypto.getRandomValues, not Math.random', () => {
+        const mathSpy = vi.spyOn(Math, 'random');
+        const cryptoSpy = vi.spyOn(globalThis.crypto, 'getRandomValues');
+        generatePassphrase(testWordList, 3);
+        expect(cryptoSpy).toHaveBeenCalled();
+        expect(mathSpy).not.toHaveBeenCalled();
+    });
+
+    test('replaceCharacters uses crypto.getRandomValues for capital selection', () => {
+        const mathSpy = vi.spyOn(Math, 'random');
+        const cryptoSpy = vi.spyOn(globalThis.crypto, 'getRandomValues');
+        replaceCharacters('apple', false, false, true);
+        expect(cryptoSpy).toHaveBeenCalled();
+        expect(mathSpy).not.toHaveBeenCalled();
     });
 });
 

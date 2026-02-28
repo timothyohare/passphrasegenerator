@@ -16,11 +16,13 @@ class PassphraseUIController {
         this.outputField = document.getElementById('generatedPassphrase');
         this.copyButton = document.getElementById('copyButton');
         this.errorAlert = document.getElementById('errorAlert');
+        this.entropyWarning = document.getElementById('entropyWarning');
 
         // Bind event listeners
         this.form.addEventListener('submit', this.handleGenerate.bind(this));
         this.copyButton.addEventListener('click', this.handleCopy.bind(this));
         this.wordCountInput.addEventListener('input', this.validateWordCount.bind(this));
+        this.wordCountInput.addEventListener('input', this.updateEntropyWarning.bind(this));
 
         this.wordListManager = new WordListManager;
         const v = this.wordListManager.initialize();
@@ -56,17 +58,16 @@ class PassphraseUIController {
         }
     }
 
-    handleCopy() {
+    async handleCopy() {
         try {
-            this.outputField.select();
-            document.execCommand('copy');
-            
+            await navigator.clipboard.writeText(this.outputField.value);
+
             // Visual feedback
             const originalText = this.copyButton.textContent;
             this.copyButton.textContent = 'Copied!';
             this.copyButton.classList.add('btn-success');
             this.copyButton.classList.remove('btn-outline-secondary');
-            
+
             setTimeout(() => {
                 this.copyButton.textContent = originalText;
                 this.copyButton.classList.remove('btn-success');
@@ -87,6 +88,11 @@ class PassphraseUIController {
             if (value < 2) this.wordCountInput.value = 2;
             if (value > 6) this.wordCountInput.value = 6;
         }
+    }
+
+    updateEntropyWarning() {
+        const value = parseInt(this.wordCountInput.value);
+        this.entropyWarning.style.display = value <= 3 ? 'block' : 'none';
     }
 
     isValidWordCount(value) {
