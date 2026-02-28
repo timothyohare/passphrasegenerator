@@ -83,9 +83,13 @@ describe('generatePassphrase', () => {
         expect(passphrases.size).toBeGreaterThan(1);
     });
 
-    test('throws for a non-positive or non-integer word count', () => {
+    test('throws for a word count below the minimum of 2', () => {
+        expect(() => generatePassphrase(testWordList, 1)).toThrow();
         expect(() => generatePassphrase(testWordList, 0)).toThrow();
         expect(() => generatePassphrase(testWordList, -1)).toThrow();
+    });
+
+    test('throws for a non-integer word count', () => {
         expect(() => generatePassphrase(testWordList, 1.5)).toThrow();
     });
 

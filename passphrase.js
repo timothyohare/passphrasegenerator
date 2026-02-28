@@ -63,8 +63,8 @@ function replaceCharacters(word, useNumbers, useSymbols, useCapitals) {
 
 function generatePassphrase(wordList, wordCount, useNumbers = false, useSymbols = false, useCapitals = false) {
 
-    if (!Number.isInteger(wordCount) || wordCount < 1) {
-        throw new Error("wordCount must be a positive integer");
+    if (!Number.isInteger(wordCount) || wordCount < 2) {
+        throw new Error("wordCount must be an integer of at least 2");
     }
 
     if (wordCount > wordList.length) {

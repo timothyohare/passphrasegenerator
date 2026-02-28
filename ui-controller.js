@@ -82,7 +82,7 @@ class PassphraseUIController {
         let value = parseInt(this.wordCountInput.value);
         
         if (isNaN(value)) {
-            this.wordCountInput.value = 3; // Default value
+            this.wordCountInput.value = 2; // Default value
         } else {
             if (value < 2) this.wordCountInput.value = 2;
             if (value > 6) this.wordCountInput.value = 6;
