@@ -21,7 +21,8 @@ class PassphraseUIController {
         // Bind event listeners
         this.form.addEventListener('submit', this.handleGenerate.bind(this));
         this.copyButton.addEventListener('click', this.handleCopy.bind(this));
-        this.wordCountInput.addEventListener('input', this.validateWordCount.bind(this));
+        this.wordCountInput.addEventListener('change', this.validateWordCount.bind(this));
+        this.wordCountInput.addEventListener('blur', this.validateWordCount.bind(this));
         this.wordCountInput.addEventListener('input', this.updateEntropyWarning.bind(this));
 
         this.wordListManager = new WordListManager;
@@ -92,7 +93,9 @@ class PassphraseUIController {
 
     updateEntropyWarning() {
         const value = parseInt(this.wordCountInput.value);
-        this.entropyWarning.style.display = value <= 3 ? 'block' : 'none';
+        if (!isNaN(value)) {
+            this.entropyWarning.style.display = value <= 3 ? 'block' : 'none';
+        }
     }
 
     isValidWordCount(value) {
