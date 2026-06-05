@@ -16,7 +16,9 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card shadow">
+
+            <!-- Generator -->
+            <div class="card shadow mb-4">
                 <div class="card-header bg-primary text-white">
                     <h2 class="h4 mb-0">Passphrase Generator</h2>
                 </div>
@@ -93,10 +95,80 @@
                     </div>
                 </div>
             </div>
+
+            <!-- How it works -->
+            <div class="card shadow mb-4">
+                <div class="card-header">
+                    <h3 class="h6 mb-0 text-muted text-uppercase fw-semibold">How it works</h3>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">
+                        A passphrase is a sequence of random words joined together. Because each word is chosen
+                        from a large dictionary using a cryptographically secure random number generator, a
+                        four-word passphrase is significantly harder to guess than a typical 8-character password
+                        — while being much easier to remember.
+                    </p>
+                    <p class="mb-0">
+                        All generation happens in your browser. No passphrase is ever sent to a server.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Options explained -->
+            <div class="card shadow mb-4">
+                <div class="card-header">
+                    <h3 class="h6 mb-0 text-muted text-uppercase fw-semibold">Options</h3>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-sm mb-0">
+                        <tbody>
+                            <tr>
+                                <td class="ps-3 py-2 fw-medium text-nowrap">Number of words</td>
+                                <td class="py-2 pe-3">More words means a stronger passphrase. Four words or more is recommended for anything important.</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-3 py-2 fw-medium text-nowrap">Numbers</td>
+                                <td class="py-2 pe-3">Replaces one letter per word with a look-alike digit: <code>a→4</code>, <code>e→3</code>, <code>l→1</code>, <code>s→5</code>, and others.</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-3 py-2 fw-medium text-nowrap">Symbols</td>
+                                <td class="py-2 pe-3">Replaces one letter per word with a symbol: <code>a→@</code>, <code>s→$</code>, <code>i→!</code>, <code>o→*</code>.</td>
+                            </tr>
+                            <tr class="border-0">
+                                <td class="ps-3 py-2 fw-medium text-nowrap">Capitals</td>
+                                <td class="py-2 pe-3">Randomly capitalises one letter per word.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- MCP / developer info -->
+            <div class="card shadow">
+                <div class="card-header">
+                    <h3 class="h6 mb-0 text-muted text-uppercase fw-semibold">Use with AI assistants (MCP)</h3>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2">
+                        This generator is also available as a
+                        <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Model Context Protocol</a>
+                        server, so AI assistants such as Claude can call it as a tool directly.
+                    </p>
+                    <p class="mb-2">Tools available via MCP:</p>
+                    <ul class="mb-2">
+                        <li><code>generate_passphrase</code> — generate a single passphrase</li>
+                        <li><code>generate_multiple_passphrases</code> — generate a batch to choose from</li>
+                        <li><code>list_word_lists</code> — discover available word lists</li>
+                    </ul>
+                    <p class="mb-0 text-muted small">
+                        Source and deployment instructions:
+                        <a href="https://github.com/timothyohare/passphrasegenerator" target="_blank" rel="noopener">github.com/timothyohare/passphrasegenerator</a>
+                    </p>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
-
-
 </body>
 </html>

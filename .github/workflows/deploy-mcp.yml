@@ -1,0 +1,58 @@
+name: Deploy MCP Server
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'mcp-server/**'
+      - 'infra/**'
+      - 'passphrase.js'
+      - 'google-10000-english-usa-no-swears-*.txt'
+
+permissions:
+  id-token: write   # required for OIDC token exchange
+  contents: read
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: mcp-server/package-lock.json
+
+      - name: Install MCP server dependencies
+        run: npm ci
+        working-directory: mcp-server
+
+      - name: Test MCP server
+        run: npm test
+        working-directory: mcp-server
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ap-southeast-2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: infra/package-lock.json
+
+      - name: Install CDK dependencies
+        run: npm ci
+        working-directory: infra
+
+      - name: Deploy
+        run: npx cdk deploy --require-approval never
+        working-directory: infra
+        env:
+          # Store the SHA-256 hex of your API key as this GitHub secret.
+          MCP_API_KEY_HASH: ${{ secrets.MCP_API_KEY_HASH }}
