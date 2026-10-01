@@ -1,9 +1,28 @@
 // passphrase.js
 
 function secureRandInt(max) {
+    if (!Number.isSafeInteger(max) || max < 1 || max > 0x100000000) {
+        throw new Error("max must be an integer between 1 and 2^32");
+    }
+    if (max === 0x100000000) {
+        const arr = new Uint32Array(1);
+        globalThis.crypto.getRandomValues(arr);
+        return arr[0];
+    }
+
+    const range = 0x100000000;
+    const limit = range - (range % max);
     const arr = new Uint32Array(1);
-    globalThis.crypto.getRandomValues(arr);
+    do {
+        globalThis.crypto.getRandomValues(arr);
+    } while (arr[0] >= limit);
     return arr[0] % max;
+}
+
+function validateOptions(useNumbers, useSymbols, useCapitals) {
+    if ([useNumbers, useSymbols, useCapitals].some(value => typeof value !== 'boolean')) {
+        throw new Error("passphrase options must be booleans");
+    }
 }
 
 const numberSubstitutions = {
@@ -24,6 +43,7 @@ const symbolSubstitutions = {
 };
 
 function replaceCharacters(word, useNumbers, useSymbols, useCapitals) {
+    validateOptions(useNumbers, useSymbols, useCapitals);
     if (!useNumbers && !useSymbols && !useCapitals) {
         return word;
     }
@@ -61,6 +81,8 @@ function replaceCharacters(word, useNumbers, useSymbols, useCapitals) {
 }
 
 function generatePassphrase(wordList, wordCount, useNumbers = false, useSymbols = false, useCapitals = false) {
+
+    validateOptions(useNumbers, useSymbols, useCapitals);
 
     if (!Number.isInteger(wordCount) || wordCount < 2) {
         throw new Error("wordCount must be an integer of at least 2");

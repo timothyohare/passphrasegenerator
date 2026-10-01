@@ -1,5 +1,5 @@
 import http from 'node:http';
-import { createHash } from 'node:crypto';
+import { createHash, timingSafeEqual } from 'node:crypto';
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { ListToolsRequestSchema, CallToolRequestSchema } from '@modelcontextprotocol/sdk/types.js';
@@ -45,11 +45,12 @@ function createMcpServer() {
 
 function isAuthorized(req) {
   const apiKeyHash = process.env.API_KEY_HASH;
-  if (!apiKeyHash) return true; // no auth configured (local dev)
+  if (!apiKeyHash) return process.env.NODE_ENV !== 'production'; // local development only
 
   const provided = req.headers['x-api-key'] ?? '';
   const hashed = createHash('sha256').update(provided).digest('hex');
-  return hashed === apiKeyHash;
+  if (!/^[a-f0-9]{64}$/i.test(apiKeyHash)) return false;
+  return timingSafeEqual(Buffer.from(hashed, 'hex'), Buffer.from(apiKeyHash, 'hex'));
 }
 
 
@@ -107,7 +108,7 @@ export async function handleRequest(req, res) {
 // Only start an HTTP server when running locally (not in Lambda).
 if (!process.env.LAMBDA_TASK_ROOT) {
   const PORT = process.env.PORT ?? 3001;
-  http.createServer(handleRequest).listen(PORT, () => {
+  http.createServer(handleRequest).listen(PORT, '127.0.0.1', () => {
     console.log(`MCP server listening on http://localhost:${PORT}/mcp`);
     console.log(`Health check: http://localhost:${PORT}/health`);
   });
